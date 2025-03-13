@@ -1,0 +1,129 @@
+#include <stdio.h>
+
+// Estrutura para armazenar informações dos produtos
+typedef struct {
+    int codigo;
+    char nome[20];
+    int quantidade;
+    float preco;
+} Produto;
+
+// Dados dos produtos
+Produto estoque[] = {
+    {101, "Produto A", 50, 10.00},
+    {102, "Produto B", 30, 20.00},
+    {103, "Produto C", 20, 15.00},
+    {104, "Produto D", 15, 25.00}
+};
+
+float total_vendas = 0;
+float total_despesas = 0;
+float total_receitas = 0;
+
+void menu_principal();
+void controle_estoque();
+void controle_financeiro();
+void vendas();
+void pagamento(float total);
+
+int main() {
+    menu_principal();
+    return 0;
+}
+
+void menu_principal() {
+    int opcao;
+    do {
+        printf("\n--- Menu Principal ---\n");
+        printf("1. Controle de Estoques\n");
+        printf("2. Controle Financeiro\n");
+        printf("3. Vendas\n");
+        printf("4. Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+        switch (opcao) {
+            case 1: controle_estoque(); break;
+            case 2: controle_financeiro(); break;
+            case 3: vendas(); break;
+            case 4: printf("Saindo...\n"); break;
+            default: printf("Opcao invalida!\n");
+        }
+    } while (opcao != 4);
+}
+
+void controle_estoque() {
+    printf("\n--- Controle de Estoques ---\n");
+    for (int i = 0; i < 4; i++) {
+        printf("%d - %s - %d unidades\n", estoque[i].codigo, estoque[i].nome, estoque[i].quantidade);
+    }
+}
+
+void controle_financeiro() {
+    int opcao;
+    float valor;
+    do {
+        printf("\n--- Controle Financeiro ---\n");
+        printf("1. Registrar Despesas\n2. Registrar Receitas\n3. Consultar Saldo\n4. Voltar\n");
+        scanf("%d", &opcao);
+        switch (opcao) {
+            case 1:
+                printf("Informe o valor da despesa: ");
+                scanf("%f", &valor);
+                total_despesas += valor;
+                break;
+            case 2:
+                printf("Informe o valor da receita: ");
+                scanf("%f", &valor);
+                total_receitas += valor;
+                break;
+            case 3:
+                printf("Saldo Atual: R$%.2f\n", total_receitas - total_despesas);
+                break;
+        }
+    } while (opcao != 4);
+}
+
+void vendas() {
+    int codigo, quantidade;
+    float total = 0;
+    printf("\n--- Vendas ---\n");
+    for (int i = 0; i < 4; i++) {
+        printf("%d - %s - R$%.2f\n", estoque[i].codigo, estoque[i].nome, estoque[i].preco);
+    }
+    printf("Digite o codigo do produto: ");
+    scanf("%d", &codigo);
+    printf("Digite a quantidade: ");
+    scanf("%d", &quantidade);
+    
+    for (int i = 0; i < 4; i++) {
+        if (estoque[i].codigo == codigo && estoque[i].quantidade >= quantidade) {
+            total = quantidade * estoque[i].preco;
+            estoque[i].quantidade -= quantidade;
+            total_vendas += total;
+            break;
+        }
+    }
+    pagamento(total);
+}
+
+void pagamento(float total) {
+    int opcao;
+    float desconto = 0, valor_final, troco, recebido;
+    printf("\n--- Pagamento ---\n");
+    printf("Total da compra: R$%.2f\n", total);
+    if (total <= 50) desconto = 0.05;
+    else if (total < 100) desconto = 0.10;
+    else desconto = 0.18;
+    valor_final = total * (1 - desconto);
+    printf("Total com desconto: R$%.2f\n", valor_final);
+    printf("Forma de pagamento: 1. Dinheiro | 2. Cartao\n");
+    scanf("%d", &opcao);
+    if (opcao == 1) {
+        printf("Informe o valor recebido: ");
+        scanf("%f", &recebido);
+        troco = recebido - valor_final;
+        printf("Troco: R$%.2f\n", troco);
+    } else {
+        printf("Pagamento aprovado na maquininha!\n");
+    }
+}
