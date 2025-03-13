@@ -1,3 +1,51 @@
-11 Faça um programa que conte de 1 a 30, mas pule os números múltiplos de 3.
-12 Escreva um programa que solicite dois números e informe se são iguais.
-13 Crie um programa que imprima a tabuada de multiplicação de um número fornecido pelo usuário.
+/*lista de exercícios*/
+#include <stdio.h>
+11.
+int main(){
+    int n;
+    printf("digite um número: ");
+    scanf("%d", &n);
+    if(n%2==0){
+        printf("%d é par", n);
+    }else{
+        printf("%d é ímpar", n);
+    }
+
+    return 0;
+12.
+} 
+
+/*lista de exercícios*/
+#include <stdio.h>
+
+int main(){
+    int n = 1;
+    while(n<=30){
+        if(n%3==0){
+            n++;
+        }else{
+            printf("%d \n", n);
+            n++;
+        }
+    }
+
+    return 0;
+13.
+}
+
+/*lista de exercícios*/
+#include <stdio.h>
+
+int main(){
+    int a;
+    int b;
+    printf("digite dois números:\n");
+    scanf("%d\n%d", &a, &b);
+    if(a==b){
+        printf("os dois números são iguais");
+    }else{
+        printf("os dois números são diferentes");
+    }
+    
+    return 0;
+}
